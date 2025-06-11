@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/wisielec.iml" filepath="$PROJECT_DIR$/.idea/wisielec.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PythonProject2.iml" filepath="$PROJECT_DIR$/.idea/PythonProject2.iml" />
     </modules>
   </component>
 </project>
