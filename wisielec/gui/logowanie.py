@@ -1,29 +1,25 @@
 import tkinter as tk
-from tkinter import messagebox
 
 
 def show_login_screen(root):
-    from Logic.autoryzacja import login_user
+    from gui.background import set_background
     from gui.powitanie import show_welcome_screen
     for widget in root.winfo_children():
         widget.destroy()
 
-    tk.Label(root, text="Login").pack(pady=10)
-    username_entry = tk.Entry(root)
-    username_entry.pack()
+    set_background(root)
 
-    tk.Label(root, text="Hasło").pack(pady=10)
+    login_label = tk.Label(root, text="Nazwa użytkownika:")
+    login_label.place(relx=0.4, rely=0.4, anchor="center")
+
+    login_entry = tk.Entry(root)
+    login_entry.place(relx=0.6, rely=0.4, anchor="center")
+
+    password_label = tk.Label(root, text="Hasło:")
+    password_label.place(relx=0.4, rely=0.5, anchor="center")
+
     password_entry = tk.Entry(root, show="*")
-    password_entry.pack()
+    password_entry.place(relx=0.6, rely=0.5, anchor="center")
 
-    def handle_login():
-        username = username_entry.get()
-        password = password_entry.get()
-        if login_user(username, password):
-            messagebox.showinfo("Sukces", "Zalogowano!")
-            # TODO: przejście do gry
-        else:
-            messagebox.showerror("Błąd", "Nieprawidłowe dane")
-
-    tk.Button(root, text="Zaloguj", command=handle_login).pack(pady=10)
-    tk.Button(root, text="Wróć", command=lambda: show_welcome_screen(root)).pack()
+    back_btn = tk.Button(root, text="Powrót", command=lambda: show_welcome_screen(root))
+    back_btn.place(relx=0.5, rely=0.7, anchor="center")

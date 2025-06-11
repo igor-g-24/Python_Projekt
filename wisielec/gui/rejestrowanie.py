@@ -1,29 +1,38 @@
 import tkinter as tk
-from tkinter import messagebox
 
 
 def show_register_screen(root):
-    from Logic.autoryzacja import register_user
+    from gui.background import set_background
     from gui.powitanie import show_welcome_screen
     for widget in root.winfo_children():
         widget.destroy()
 
-    tk.Label(root, text="Rejestracja").pack(pady=10)
+    set_background(root)
+
+    username_label = tk.Label(root, text="Nazwa użytkownika:")
+    username_label.place(relx=0.4, rely=0.45, anchor="center")
+
     username_entry = tk.Entry(root)
-    username_entry.pack()
+    username_entry.place(relx=0.6, rely=0.45, anchor="center")
 
-    tk.Label(root, text="Hasło").pack(pady=10)
+    password_label = tk.Label(root, text="Hasło:")
+    password_label.place(relx=0.4, rely=0.55, anchor="center")
+
     password_entry = tk.Entry(root, show="*")
-    password_entry.pack()
+    password_entry.place(relx=0.6, rely=0.55, anchor="center")
 
-    def handle_register():
+    def register():
         username = username_entry.get()
         password = password_entry.get()
-        if register_user(username, password):
-            messagebox.showinfo("Sukces", "Zarejestrowano pomyślnie!")
-            show_welcome_screen(root)
-        else:
-            messagebox.showerror("Błąd", "Użytkownik już istnieje!")
 
-    tk.Button(root, text="Zarejestruj", command=handle_register).pack(pady=10)
-    tk.Button(root, text="Wróć", command=lambda: show_welcome_screen(root)).pack()
+        if not username or not password:
+            print("Uzupełnij wszystkie pola.")
+        else:
+            print(f"Zarejestrowano: {username}")
+            show_welcome_screen(root)
+
+    register_btn = tk.Button(root, text="Zarejestruj", command=register)
+    register_btn.place(relx=0.5, rely=0.7, anchor="center")
+
+    back_btn = tk.Button(root, text="Powrót", command=lambda: show_welcome_screen(root))
+    back_btn.place(relx=0.5, rely=0.8, anchor="center")
