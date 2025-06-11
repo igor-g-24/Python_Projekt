@@ -1,39 +1,32 @@
-from .models import Base, engine, SessionLocal, Category, Word
+from .models import Base, engine, SessionLocal, Word
 
 
 def setup_database():
-    """Tworzy tabele i wypełnia je początkowymi danymi, jeśli nie istnieją."""
     Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()
 
-    # Sprawdź, czy kategorie już istnieją
-    if db.query(Category).count() == 0:
-        print("Wypełnianie bazy danych początkowymi danymi...")
+    if db.query(Word).count() == 0:
+        print("Wypełnianie bazy danych hasłami z pliku hasla.txt...")
 
-        # Kategorie
-        cat_zwierzeta = Category(name="Zwierzęta")
-        cat_owoce = Category(name="Owoce")
-        cat_panstwa = Category(name="Państwa")
+        try:
+            with open('hasla.txt', 'r', encoding='utf-8') as f:
+                for line in f:
+                    word_text = line.strip().upper()
+                    if word_text:
+                        word = Word(text=word_text)
+                        db.add(word)
 
-        db.add_all([cat_zwierzeta, cat_owoce, cat_panstwa])
-        db.commit()  # Commit, aby uzyskać ID dla kategorii
-
-        # Hasła
-        words_data = [
-            ("KROKODYL", cat_zwierzeta), ("SŁOŃ", cat_zwierzeta), ("ŻYRAFA", cat_zwierzeta),
-            ("JABŁKO", cat_owoce), ("BANAN", cat_owoce), ("TRUSKAWKA", cat_owoce),
-            ("POLSKA", cat_panstwa), ("NIEMCY", cat_panstwa), ("HISZPANIA", cat_panstwa)
-        ]
-
-        for text, category in words_data:
-            word = Word(text=text, category=category)
-            db.add(word)
-
-        db.commit()
-        print("Baza danych została pomyślnie zainicjowana.")
+            db.commit()
+            print(f"Baza danych została pomyślnie wypełniona.")
+        except FileNotFoundError:
+            print(
+                "BŁĄD: Nie znaleziono pliku 'hasla.txt'. Upewnij się, że znajduje się on w głównym folderze projektu.")
+        except Exception as e:
+            print(f"Wystąpił nieoczekiwany błąd podczas ładowania haseł: {e}")
+            db.rollback()
     else:
-        print("Baza danych już istnieje.")
+        print("Baza danych z hasłami już istnieje.")
 
     db.close()
 

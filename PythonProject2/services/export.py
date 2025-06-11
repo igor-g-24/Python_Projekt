@@ -2,7 +2,6 @@ import csv
 from database.models import SessionLocal, User
 
 def export_stats_to_csv(filepath):
-    """Eksportuje statystyki wszystkich użytkowników do pliku CSV."""
     db = SessionLocal()
     users = db.query(User).all()
     db.close()

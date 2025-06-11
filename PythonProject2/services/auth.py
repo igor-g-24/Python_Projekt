@@ -3,17 +3,14 @@ from database.models import SessionLocal, User
 
 
 def hash_password(password: str) -> bytes:
-    """Haszuje hasło."""
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 
 def check_password(password: str, hashed_password: bytes) -> bool:
-    """Sprawdza hasło z hashem."""
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
 
 
 def register_user(username, password):
-    """Rejestruje nowego użytkownika."""
     db = SessionLocal()
     if db.query(User).filter(User.username == username).first():
         db.close()
@@ -28,7 +25,6 @@ def register_user(username, password):
 
 
 def login_user(username, password):
-    """Loguje użytkownika."""
     db = SessionLocal()
     user = db.query(User).filter(User.username == username).first()
     db.close()

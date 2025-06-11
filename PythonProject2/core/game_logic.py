@@ -1,5 +1,5 @@
 class HangmanGame:
-    def __init__(self, word: str, max_lives: int = 10):  # ZMIANA: 8 -> 10
+    def __init__(self, word: str, max_lives: int = 10):
         self.word_to_guess = word.upper()
         self.max_lives = max_lives
         self.guessed_letters = set()
@@ -31,11 +31,10 @@ class HangmanGame:
         return '_' not in self.hidden_word
 
 
-# Tryb Jednoosobowy
 class SinglePlayer:
     def __init__(self, word: str, user_id: int):
         self.game = HangmanGame(word)
-        self.lives = self.game.max_lives  # Automatycznie pobierze 10
+        self.lives = self.game.max_lives
         self.user_id = user_id
 
     def make_guess(self, letter: str) -> str:
@@ -48,11 +47,9 @@ class SinglePlayer:
         return self.game.is_won() or self.lives <= 0
 
 
-# Tryb Dwuosobowy
 class TwoPlayer:
     def __init__(self, word: str, user1_id: int, user2_id: int):
         self.game = HangmanGame(word)
-        # ZMIANA: Każdy gracz ma połowę z 10 żyć, czyli 5
         self.players = {
             1: {'id': user1_id, 'lives': self.game.max_lives // 2},
             2: {'id': user2_id, 'lives': self.game.max_lives // 2}
@@ -74,12 +71,10 @@ class TwoPlayer:
         if self.game.is_won():
             self.winner = self.players[self.current_player]['id']
             return True
-        # ZMIANA: Koniec gry, gdy obaj gracze stracą wszystkie życia
         if self.players[1]['lives'] <= 0 and self.players[2]['lives'] <= 0:
             self.winner = None
             return True
 
-        # Jeśli jeden gracz stracił życia, pomiń jego turę
         if self.players[self.current_player]['lives'] <= 0:
             self.switch_player()
 
