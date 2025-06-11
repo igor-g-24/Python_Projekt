@@ -1,1 +1,11 @@
-To nasz projekt
+
+# Gra w wisielec
+
+
+
+## Authors
+
+- ja
+- ty
+
+
